@@ -33,9 +33,6 @@ public class PixelAdjustments {
 		for (int sa = 0; sa < samplesPerFrame; sa++) {
 			t = PApplet.map(p5.frameCount - 1 + sa * shutterAngle / samplesPerFrame, 0, numFrames, 0, 1);
 			// draw_();
-			if (p5 instanceof BeesBombs) {
-				((BeesBombs) p5).draw_();
-			}
 			p5.loadPixels();
 			for (int i = 0; i < p5.pixels.length; i++) {
 				result[i][0] += p5.pixels[i] >> 16 & 0xff;
