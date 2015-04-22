@@ -1,0 +1,173 @@
+/*
+ *   __               .__       .__  ._____.           
+ * _/  |_  _______  __|__| ____ |  | |__\_ |__   ______
+ * \   __\/  _ \  \/  /  |/ ___\|  | |  || __ \ /  ___/
+ *  |  | (  <_> >    <|  \  \___|  |_|  || \_\ \\___ \ 
+ *  |__|  \____/__/\_ \__|\___  >____/__||___  /____  >
+ *                   \/       \/             \/     \/ 
+ *
+ * Copyright (c) 2006-2011 Karsten Schmidt
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * http://creativecommons.org/licenses/LGPL/2.1/
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ */
+
+package amalgam.toxi.physics2D;
+
+import processing.core.PApplet;
+import toxi.geom.SpatialIndex;
+import toxi.geom.Vec2D;
+import toxi.physics2d.VerletParticle2D;
+import toxi.physics2d.behaviors.ParticleBehavior2D;
+
+public class PulsingBehavior2D implements ParticleBehavior2D {
+
+	protected Vec2D attractor;
+	protected float attrStrength;
+
+	protected float radius, radiusSquared;
+	protected float strength;
+	protected int period;
+	protected float jitter;
+	protected float timeStep;
+
+	private int age;
+	private int life;
+
+	private boolean reverses;
+
+	public PulsingBehavior2D(Vec2D attractor, float radius, float strength, int period, boolean reverses) {
+		this(attractor, radius, strength, period, reverses, 0);
+	}
+
+	public PulsingBehavior2D(Vec2D attractor, float radius, float strength, int period, boolean reverses, float jitter) {
+		this.attractor = attractor;
+		this.strength = strength;
+		this.period = period;
+		this.jitter = jitter;
+		setRadius(radius);
+
+		this.reverses = reverses;
+
+		age = 0;
+		this.life = (int) Float.POSITIVE_INFINITY;
+	}
+
+	public void apply(VerletParticle2D p) {
+		float l = (float) (age % period) / period;
+
+		float str;
+		// flip attraction or just fade off to no attraction/repulsion
+		if (reverses) {
+			str = strength * PApplet.sin(PApplet.TAU * l);
+		} else {
+			str = strength * PApplet.sq(PApplet.sin(PApplet.TAU * l));
+		}
+
+		Vec2D delta = attractor.sub(p);
+		float dist = delta.magSquared();
+		if (dist < radiusSquared) {
+			Vec2D f = delta.normalizeTo((1.0f - dist / radiusSquared)).jitter(jitter).scaleSelf(str);
+			p.addForce(f);
+		}
+	}
+	public void applyWithIndex(SpatialIndex<Vec2D> spaceHash) {
+		throw new UnsupportedOperationException("applyWithIndex not permitted");
+	}
+
+	public void configure(float timeStep) {
+		this.timeStep = timeStep;
+		setStrength(strength);
+	}
+
+	/**
+	 * @return the attractor
+	 */
+	public Vec2D getAttractor() {
+		return attractor;
+	}
+
+	/**
+	 * @return the jitter
+	 */
+	public float getJitter() {
+		return jitter;
+	}
+
+	/**
+	 * @return the radius
+	 */
+	public float getRadius() {
+		return radius;
+	}
+
+	/**
+	 * @return the strength
+	 */
+	public float getStrength() {
+		return strength;
+	}
+
+	/**
+	 * @param attractor
+	 *            the attractor to set
+	 */
+	public void setAttractor(Vec2D attractor) {
+		this.attractor = attractor;
+	}
+
+	/**
+	 * @param jitter
+	 *            the jitter to set
+	 */
+	public void setJitter(float jitter) {
+		this.jitter = jitter;
+	}
+
+	public void setRadius(float r) {
+		this.radius = r;
+		this.radiusSquared = r * r;
+	}
+
+	/**
+	 * @param strength
+	 *            the strength to set
+	 */
+	public void setStrength(float strength) {
+		this.strength = strength;
+		this.attrStrength = strength * timeStep;
+	}
+
+	public boolean supportsSpatialIndex() {
+		return true;
+	}
+
+	@Override
+	public void update() {
+		age++;
+	}
+
+	@Override
+	public int getAge() {
+		return age;
+	}
+
+	@Override
+	public int getLife() {
+		return life;
+	}
+
+}
