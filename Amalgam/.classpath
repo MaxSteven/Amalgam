@@ -26,5 +26,7 @@
 	<classpathentry kind="lib" path="lib/other/jsminim.jar"/>
 	<classpathentry kind="lib" path="lib/other/minim.jar"/>
 	<classpathentry kind="lib" path="lib/other/mp3spi1.9.4.jar"/>
+	<classpathentry kind="lib" path="lib/other/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/other/punktiert.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
