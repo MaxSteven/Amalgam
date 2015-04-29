@@ -14,7 +14,6 @@ public class WeightedGradient_Example extends PApplet {
 
 	public void setup() {
 		size(1280, 720, P2D);
-		background(0);
 		smooth(8);
 		noStroke();
 		ellipseMode(CENTER);

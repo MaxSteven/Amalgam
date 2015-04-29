@@ -1,8 +1,7 @@
 package amalgam.audio;
 
-import ddf.minim.AudioListener;
-import ddf.minim.AudioPlayer;
-import ddf.minim.analysis.BeatDetect;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
 
 public class BeatListener implements AudioListener {
 	private BeatDetect bd;

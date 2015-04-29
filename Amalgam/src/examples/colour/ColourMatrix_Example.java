@@ -6,7 +6,7 @@ import amalgam.colour.ColourMatrix;
 import amalgam.colour.QuickColours;
 
 @SuppressWarnings("serial")
-public class ColourMatrix_Test extends PApplet {
+public class ColourMatrix_Example extends PApplet {
 
 	ColourMatrix m;
 

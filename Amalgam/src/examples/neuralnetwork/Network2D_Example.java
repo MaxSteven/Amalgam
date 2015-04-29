@@ -6,44 +6,28 @@ import java.util.Comparator;
 
 import processing.core.PApplet;
 import toxi.color.ColorList;
-import toxi.color.TColor;
-import toxi.geom.Rect;
 import toxi.geom.Vec2D;
-import amalgam.colour.WeightedGradient;
+import amalgam.colour.QuickColours;
 import amalgam.lattice.IsoLattice;
 import amalgam.lattice.Tesselation2D;
 import amalgam.neuralnetwork.NeuralNetwork2D;
 import amalgam.neuralnetwork.Neuron2D;
-import controlP5.ControlP5;
 
 @SuppressWarnings("serial")
-public class SimpleNetwork extends PApplet {
-	ControlP5 cp5;
-
+public class Network2D_Example extends PApplet {
 	IsoLattice iso;
 	Tesselation2D tess;
 	float div = 100;
 
-	// Multiple networks
 	NeuralNetwork2D network;
-	Rect bounds;
-
 	ColorList clrs;
 
 	public void setup() {
-		size(500, 500, P3D); // P3D needed for strokeWeight > 2
+		size(1000, 500, P3D);
 		background(0);
 		smooth(8);
-		cp5 = new ControlP5(this);
-		cp5.addFrameRate();
 
-		clrs = new ColorList();
-		clrs.add(TColor.newHex("000000"));
-		clrs.add(TColor.newHex("79bb22"));
-		clrs.add(TColor.newHex("ffffff"));
-		WeightedGradient grad = new WeightedGradient(clrs);
-		clrs = grad.getGradient(50);
-
+		clrs = QuickColours.get(500);
 		network = new NeuralNetwork2D(this);
 
 		// =========================================================================
@@ -95,8 +79,12 @@ public class SimpleNetwork extends PApplet {
 
 	public void draw() {
 		background(0);
-		tess.drawAllDetails(this, clrs, true);
 
+		if (frameCount == 1) {
+			network.feedforward(5f);
+		}
+
+		tess.drawAllDetails(this, clrs, true);
 		network.update();
 		network.render();
 	}

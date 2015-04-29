@@ -50,7 +50,7 @@ public class NoiseGradient {
 				TColor c = finalGrad.get(i);
 				p5.noStroke();
 				p5.fill(c.toARGB());
-				p5.rect(i, y, 1, 20);
+				p5.rect(i, y, 1, 250);
 			}
 		} else {
 			System.out.println("No gradient to render");
