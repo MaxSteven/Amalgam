@@ -58,24 +58,24 @@ public class PolygonTiler {
 		switch (type) {
 			case 0 :
 				// 3.3.3.3.3.3
-				tiling.append(Polygon2D.fromEdgeLength(size, 3).rotate(PApplet.PI / 6));
-				a = tiling.add(new int[]{0}, new int[]{0, 1, 2}, 3);
-				b = tiling.add(a, new int[]{1, 2}, 3);
+				tiling.append(Polygon2D.fromEdgeLength(size, 3).rotate(PApplet.PI / 6), TColor.RED.copy());
+				a = tiling.add(new int[]{0}, new int[]{0, 1, 2}, 3, TColor.GREEN.copy());
+				b = tiling.add(a, new int[]{1, 2}, 3, TColor.RED.copy());
 				tiling.repeat(b, reps);
 				break;
 			case 1 :
 				// 4.6.12
-				tiling.append(Polygon2D.fromEdgeLength(size, 12).rotate(PApplet.PI / 12));
-				a = tiling.add(new int[]{0}, new int[]{0, 2, 4, 6, 8, 10}, 6);
-				b = tiling.add(new int[]{0}, new int[]{1, 3, 5, 7, 9, 11}, 4);
-				c = tiling.add(b, new int[]{2}, 12);
+				tiling.append(Polygon2D.fromEdgeLength(size, 12).rotate(PApplet.PI / 12), TColor.RED.copy());
+				a = tiling.add(new int[]{0}, new int[]{0, 2, 4, 6, 8, 10}, 6, TColor.GREEN.copy());
+				b = tiling.add(new int[]{0}, new int[]{1, 3, 5, 7, 9, 11}, 4, TColor.BLUE.copy());
+				c = tiling.add(b, new int[]{2}, 12, TColor.RED.copy());
 				tiling.repeat(c, reps);
 				break;
 			case 2 :
 				// 6.6.6
-				tiling.append(Polygon2D.fromEdgeLength(size, 6));
-				a = tiling.add(new int[]{0}, new int[]{0, 1, 2, 3, 4, 5}, 6);
-				b = tiling.add(a, new int[]{2, 3}, 6);
+				tiling.append(Polygon2D.fromEdgeLength(size, 6), TColor.RED.copy());
+				a = tiling.add(new int[]{0}, new int[]{0, 1, 2, 3, 4, 5}, 6, TColor.RED.copy());
+				b = tiling.add(a, new int[]{2, 3}, 6, TColor.GREEN.copy());
 				tiling.repeat(b, reps);
 				break;
 			case 3 :
@@ -150,6 +150,7 @@ public class PolygonTiler {
 				tiling.repeat(b, reps);
 				break;
 		}
+		tiling.setCentre(centre);
 		return tiling;
 	}
 
@@ -252,9 +253,9 @@ public class PolygonTiler {
 		for (Polygon2D poly : duplicatedPolygons) {
 			Vec2D key = xy.add(poly.getCentre());
 			addRepeat = true;
-//			if (polys.containsKey(key)) {
-//				addRepeat = false;
-//			}
+			// if (polys.containsKey(key)) {
+			// addRepeat = false;
+			// }
 			for (Vec2D k : polys.keySet()) {
 				if (k.equalsWithTolerance(key, 0.001f)) { // suitable tolerance for new shapes. Slow but accurate - prevents overlaps.
 					addRepeat = false;
@@ -353,6 +354,10 @@ public class PolygonTiler {
 	}
 
 	public void renderDual() {
+		if (duals == null) {
+			dual();
+		}
+
 		p5.pushMatrix();
 		p5.translate(centre.x, centre.y);
 

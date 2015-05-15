@@ -11,10 +11,17 @@ import processing.core.PApplet;
 public class AIO {
 
 	/**
+	 * Get timestamp
+	 */
+	public static String getTimestamp() {
+		return new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(new Date());
+	}
+
+	/**
 	 * initialises PDF output
 	 */
 	public static void startExport(PApplet p5) {
-		String f = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(new Date()) + ".pdf";
+		String f = getTimestamp() + ".pdf";
 		p5.beginRecord(PApplet.PDF, f);
 	}
 
@@ -29,7 +36,7 @@ public class AIO {
 	 * initialises Raw PDF output
 	 */
 	public static void startRawExport(PApplet p5) {
-		String f = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(new Date()) + ".pdf";
+		String f = getTimestamp() + ".pdf";
 		p5.beginRaw(PApplet.PDF, f);
 	}
 
@@ -44,7 +51,7 @@ public class AIO {
 	 * Quick frame saver TGA
 	 */
 	public static void saveFrameTGA(PApplet p5) {
-		String f = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(new Date()) + ".tga";
+		String f = getTimestamp() + ".tga";
 		p5.saveFrame(f);
 	}
 
@@ -67,7 +74,7 @@ public class AIO {
 	 * Quick frame saver PNG
 	 */
 	public static void saveFramePNG(PApplet p5) {
-		String f = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(new Date()) + ".png";
+		String f = getTimestamp() + ".png";
 		p5.saveFrame(f);
 	}
 
@@ -79,15 +86,8 @@ public class AIO {
 	 * Quick frame saver TIFF
 	 */
 	public static void saveFrameTIF(PApplet p5) {
-		String f = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(new Date()) + ".tif";
+		String f = getTimestamp() + ".tif";
 		p5.saveFrame(f);
-	}
-
-	/**
-	 * Get timestamp for file saving in other formats
-	 */
-	public static String getTimestamp() {
-		return new SimpleDateFormat("HH-mm-ss-SSS").format(new Date());
 	}
 
 	/**
